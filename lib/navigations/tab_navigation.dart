@@ -7,8 +7,8 @@ class TabNavigation extends StatelessWidget implements PreferredSizeWidget{
   Widget build(BuildContext context) {
     return const TabBar(
       tabs: [
-        Tab(text: "A"),
-        Tab(text: "B"),
+        Tab(text: "All Entries"),
+        Tab(text: "Grouped by Projects"),
       ]
     );
   }

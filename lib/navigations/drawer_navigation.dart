@@ -15,7 +15,7 @@ class DrawerNavigation extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, "Projects"),
           ),
           _buildItems(
-            icon: Icons.task,
+            icon: Icons.task_alt_outlined,
             title: "Tasks",
             onTap: () => Navigator.pushNamed(context, "Tasks"),
           ),
@@ -27,7 +27,9 @@ class DrawerNavigation extends StatelessWidget {
   Widget _buildHeader() {
     return DrawerHeader(
       decoration: BoxDecoration(color: Color(0xff1D1E22)),
-      child: Column(children: [Text("Menu")]),
+      child: Column(
+        children: [Text("Menu", selectionColor: Color(0xFF000000),)]
+      ),
     );
   }
 
