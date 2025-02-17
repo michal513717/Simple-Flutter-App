@@ -14,7 +14,7 @@ class TaskProvider with ChangeNotifier {
   }
 
   void _loadTasksFromStorage() async {
-    var storedTasks = storage.getItem('tasks');
+    var storedTasks = storage.getItem('tasks-v1');
 
     if(storedTasks != null){
       List<dynamic> decodedTasks;
@@ -25,11 +25,12 @@ class TaskProvider with ChangeNotifier {
 
   void _saveTasksToStorage() {
     String jsonString = jsonEncode(_tasks.map((e) => e.toJson()).toList());
-    storage.setItem('tasks', jsonString);
+    storage.setItem('tasks-v1', jsonString);
   }
 
   void deleteTask(String id) {
     _tasks.removeWhere((task) => task.id == id);
+    _saveTasksToStorage();
     notifyListeners();
   }
 

@@ -9,7 +9,11 @@ class TasksManagmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Manage Tasks")),
+      appBar: AppBar(
+        title: Text("Manage Tasks"),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,  
+      ),
       body: Consumer<TaskProvider>(
         builder: (context, provider, child) {
           return ListView.builder(
@@ -19,7 +23,7 @@ class TasksManagmentScreen extends StatelessWidget {
               return ListTile(
                 title: Text(task.name),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.delete, color: Colors.red),
                   onPressed: () {
                     provider.deleteTask(task.id);
                   },

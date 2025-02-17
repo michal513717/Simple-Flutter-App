@@ -3,6 +3,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:sfa/providers/project_provider.dart';
 import 'package:sfa/providers/task_provider.dart';
+import 'package:sfa/providers/time_entry_provider.dart';
 import 'package:sfa/screens/home_screen.dart';
 import 'package:sfa/screens/project_task_managment_screen.dart';
 import 'package:sfa/screens/tasks_managment_screen.dart';
@@ -25,7 +26,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (_) => TaskProvider(localStorage)),
-      ChangeNotifierProvider(create: (_) => ProjectProvider(localStorage))
+      ChangeNotifierProvider(create: (_) => ProjectProvider(localStorage)),
+      ChangeNotifierProvider(create: (_) => TimeEntryProvider(localStorage))
     ],
     child: MaterialApp(
       title: 'Time Tracking',

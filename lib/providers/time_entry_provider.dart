@@ -7,14 +7,14 @@ class TimeEntryProvider with ChangeNotifier {
   LocalStorage storage;
   List<TimeEntry> _timeEntries = [];
 
-  List<TimeEntry> get timeEntry => _timeEntries;
+  List<TimeEntry> get timeEntries => _timeEntries;
 
   TimeEntryProvider(this.storage){
     _loadTimeEntriesFromStorage();
   }
 
   void _loadTimeEntriesFromStorage() async {
-    var storedTimeEntries = storage.getItem('timeEntries');
+    var storedTimeEntries = storage.getItem('timeEntries-v2');
     
     if(storedTimeEntries != null){
       List<dynamic> decodedEntries;
@@ -25,7 +25,13 @@ class TimeEntryProvider with ChangeNotifier {
 
   void _saveTimeEntriesToStorage() {
     String jsonString = jsonEncode(_timeEntries.map((e) => e.toJson()).toList());
-    storage.setItem('timeEntries', jsonString);
+    storage.setItem('timeEntries-v2', jsonString);
+  }
+
+  void removeTimeEntry(String id) {
+    _timeEntries.removeWhere((data) => data.id == id);
+    _saveTimeEntriesToStorage();
+    notifyListeners();
   }
 
   void addTimeEntry(TimeEntry data) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './../models/time_entry.model.dart';
-import './../providers/time_entry_provider.dart';
+import 'package:sfa/models/time_entry.model.dart';
+import 'package:sfa/providers/time_entry_provider.dart';
+import 'package:sfa/providers/project_provider.dart';
+import 'package:sfa/providers/task_provider.dart';
 
 class AddTimeEntryScreen extends StatefulWidget {
   const AddTimeEntryScreen({super.key});
@@ -12,8 +14,8 @@ class AddTimeEntryScreen extends StatefulWidget {
 
 class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _projectId = '';
-  String _taskId = '';
+  String? _projectId;
+  String? _taskId;
   double _totalTime = 0.0;
   String _notes = '';
   DateTime _selectedDate = DateTime.now();
@@ -37,55 +39,80 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Add Time Entry')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0), // Padding wokół całego formularza
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              DropdownButtonFormField<String>(
-                value: _projectId.isEmpty ? null : _projectId,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _projectId = newValue ?? '';
-                  });
-                },
-                decoration: const InputDecoration(labelText: 'Project'),
-                items: ['Project 1', 'Project 2', 'Project 3']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+              // --------- PROJECT DROPDOWN (Consumer) ---------
+              Consumer<ProjectProvider>(
+                builder: (context, projectProvider, child) {
+                  final projects = projectProvider.projects;
+                  return DropdownButtonFormField<String>(
+                    value: _projectId,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _projectId = newValue;
+                        _taskId = null;
+                      });
+                    },
+                    decoration: const InputDecoration(labelText: 'Project'),
+                    items: projects.isNotEmpty
+                        ? projects.map<DropdownMenuItem<String>>((project) {
+                            return DropdownMenuItem<String>(
+                              value: project.name,
+                              child: Text(project.name),
+                            );
+                          }).toList()
+                        : [
+                            const DropdownMenuItem<String>(
+                              value: null,
+                              child: Text('Brak projektów'),
+                            )
+                          ],
                   );
-                }).toList(),
+                },
               ),
-              const SizedBox(height: 16), // Odstęp
+              const SizedBox(height: 16),
 
-              DropdownButtonFormField<String>(
-                value: _taskId.isEmpty ? null : _taskId,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _taskId = newValue ?? '';
-                  });
-                },
-                decoration: const InputDecoration(labelText: 'Task'),
-                items: ['Task 1', 'Task 2', 'Task 3']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+              // --------- TASK DROPDOWN (Consumer) ---------
+              Consumer<TaskProvider>(
+                builder: (context, taskProvider, child) {
+                  final tasks = taskProvider.tasks;
+                  return DropdownButtonFormField<String>(
+                    value: _taskId,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _taskId = newValue;
+                      });
+                    },
+                    decoration: const InputDecoration(labelText: 'Task'),
+                    items: tasks.isNotEmpty
+                        ? tasks.map<DropdownMenuItem<String>>((task) {
+                            return DropdownMenuItem<String>(
+                              value: task.name,
+                              child: Text(task.name),
+                            );
+                          }).toList()
+                        : [
+                            const DropdownMenuItem<String>(
+                              value: null,
+                              child: Text('Brak zadań'),
+                            )
+                          ],
                   );
-                }).toList(),
+                },
               ),
-              const SizedBox(height: 16), // Odstęp
+              const SizedBox(height: 16),
 
               GestureDetector(
                 onTap: () => _pickDate(context),
                 child: AbsorbPointer(
                   child: TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Date',
-                      suffixIcon: const Icon(Icons.calendar_today),
+                      suffixIcon: Icon(Icons.calendar_today),
                     ),
                     controller: TextEditingController(
                       text: "${_selectedDate.toLocal()}".split(' ')[0],
@@ -93,7 +120,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16), // Odstęp
+              const SizedBox(height: 16),
 
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Total Time (hours)'),
@@ -110,7 +137,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                 onSaved: (value) =>
                     _totalTime = double.tryParse(value!.replaceAll(',', '.')) ?? 0.0,
               ),
-              const SizedBox(height: 16), // Odstęp
+              const SizedBox(height: 16),
 
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Notes'),
@@ -122,7 +149,7 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                 },
                 onSaved: (value) => _notes = value!,
               ),
-              const SizedBox(height: 24), // Większy odstęp przed przyciskiem
+              const SizedBox(height: 24),
 
               Center(
                 child: ElevatedButton(
@@ -134,11 +161,11 @@ class _AddTimeEntryScreenState extends State<AddTimeEntryScreen> {
                         listen: false,
                       ).addTimeEntry(
                         TimeEntry(
-                          id: DateTime.now().toString(), // Simple ID generation
-                          projectId: _projectId,
-                          taskId: _taskId,
+                          id: DateTime.now().toString(),
+                          projectId: _projectId!,
+                          taskId: _taskId!,
                           totalTime: _totalTime,
-                          date: _selectedDate, // Używa wybranej daty
+                          date: _selectedDate,
                           notes: _notes,
                         ),
                       );

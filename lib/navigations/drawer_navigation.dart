@@ -32,9 +32,10 @@ class DrawerNavigation extends StatelessWidget {
 
   Widget _buildHeader() {
     return DrawerHeader(
-      decoration: BoxDecoration(color: Color(0xff1D1E22)),
+      decoration: BoxDecoration(color: Colors.deepPurple),
       child: Column(
-        children: [Text("Menu", selectionColor: Color(0xFF000000),)]
+        children: [
+          Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24))]
       ),
     );
   }
@@ -44,6 +45,9 @@ class DrawerNavigation extends StatelessWidget {
     required String title,
     required GestureTapCallback onTap,
   }) {
-    return ListTile(leading: Icon(icon), title: Text(title), onTap: onTap);
+    return ListTile(
+      leading: Icon(icon, color: Colors.deepPurple), 
+      title: Text(title), 
+      onTap: onTap);
   }
 }

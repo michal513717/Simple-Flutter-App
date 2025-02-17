@@ -14,7 +14,7 @@ class ProjectProvider with ChangeNotifier {
   }
 
   void _loadProjectFromStorage() async {
-    var storeProjects = storage.getItem('projects');
+    var storeProjects = storage.getItem('projects-v1');
 
     if (storeProjects != null) {
       List<dynamic> decodedProcjects;
@@ -25,11 +25,12 @@ class ProjectProvider with ChangeNotifier {
 
   void _saveProjectsToStorage() {
     String jsonString = jsonEncode(_projects.map((e) => e.toJson()).toList());
-    storage.setItem('projects', jsonString);
+    storage.setItem('projects-v1', jsonString);
   }
 
   void deleteProject(String id) {
     _projects.removeWhere((project) => project.id == id);
+    _saveProjectsToStorage();
     notifyListeners();
   }
 
