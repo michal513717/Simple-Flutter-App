@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sfa/models/project.model.dart';
-import 'package:sfa/providers/project_provider.dart';
 
 class AddProjectDialog extends StatefulWidget {
 
@@ -37,8 +35,7 @@ class _AddProjectDialogState extends State<AddProjectDialog> {
             var newCategory = Project(
                 id: DateTime.now().toString(), name: _controller.text);
             widget.onAdd(newCategory);
-            Provider.of<ProjectProvider>(context, listen: false)
-                .addProject(newCategory);
+
             _controller.clear();
             Navigator.of(context).pop();
           },

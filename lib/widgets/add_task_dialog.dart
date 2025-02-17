@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sfa/models/task.model.dart';
-import 'package:sfa/providers/task_provider.dart';
 
 class AddTaskDialog extends StatefulWidget {
 
@@ -35,10 +33,12 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
           child: Text('Add'),
           onPressed: () {
             var newCategory = Task(
-                id: DateTime.now().toString(), name: _controller.text);
+              id: DateTime.now().toString(), 
+              name: _controller.text
+            );
+
             widget.onAdd(newCategory);
-            Provider.of<TaskProvider>(context, listen: false)
-                .addTask(newCategory);
+
             _controller.clear();
             Navigator.of(context).pop();
           },
