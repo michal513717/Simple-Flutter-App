@@ -12,12 +12,18 @@ class DrawerNavigation extends StatelessWidget {
           _buildItems(
             icon: Icons.folder,
             title: "Projects",
-            onTap: () => Navigator.pushNamed(context, "Projects"),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/manage_projects");
+            },
           ),
           _buildItems(
             icon: Icons.task_alt_outlined,
             title: "Tasks",
-            onTap: () => Navigator.pushNamed(context, "Tasks"),
+            onTap: () { 
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/manage_tasks");
+            },
           ),
         ],
       ),

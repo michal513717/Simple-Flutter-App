@@ -14,7 +14,6 @@ class TaskProvider with ChangeNotifier {
   }
 
   void _loadTasksFromStorage() async {
-    await storage.ready;
     var storedTasks = storage.getItem('tasks');
     if(storedTasks != null){
       _tasks = List<Task>.from(
@@ -29,7 +28,12 @@ class TaskProvider with ChangeNotifier {
     storage.setItem('tasks', jsonString);
   }
 
-  void addTasks(Task data) {
+  void deleteTask(String id) {
+    _tasks.removeWhere((task) => task.id == id);
+    notifyListeners();
+  }
+
+  void addTask(Task data) {
     _tasks.add(data);
     _saveTasksToStorage();
     notifyListeners();

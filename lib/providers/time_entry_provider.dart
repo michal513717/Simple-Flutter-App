@@ -14,7 +14,6 @@ class TimeEntryProvider with ChangeNotifier {
   }
 
   void _loadTimeEntriesFromStorage() async {
-    await storage.ready;
     var storedTimeEntries = storage.getItem('timeEntries');
     if(storedTimeEntries != null){
       _timeEntries = List<TimeEntry>.from(
