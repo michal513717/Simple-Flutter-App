@@ -9,17 +9,17 @@ class ProjectProvider with ChangeNotifier {
 
   List<Project> get projects => _projects;
 
-  ProjectProvider(this.storage){
+  ProjectProvider(this.storage) {
     _loadProjectFromStorage();
   }
 
   void _loadProjectFromStorage() async {
-    var storedTasks = storage.getItem('projects');
-    if(storedTasks != null){
-      _projects = List<Project>.from(
-        (storedTasks as List).map((item) => Project.fromJson(item)),
-      );
-       ();
+    var storeProjects = storage.getItem('projects');
+
+    if (storeProjects != null) {
+      List<dynamic> decodedProcjects;
+      decodedProcjects = jsonDecode(storeProjects);
+      _projects = decodedProcjects.map((item) => Project.fromJson(item)).toList();
     }
   }
 
@@ -28,7 +28,7 @@ class ProjectProvider with ChangeNotifier {
     storage.setItem('projects', jsonString);
   }
 
-  void deleteProject(String id){
+  void deleteProject(String id) {
     _projects.removeWhere((project) => project.id == id);
     notifyListeners();
   }

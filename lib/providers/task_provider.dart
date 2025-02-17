@@ -15,11 +15,11 @@ class TaskProvider with ChangeNotifier {
 
   void _loadTasksFromStorage() async {
     var storedTasks = storage.getItem('tasks');
+
     if(storedTasks != null){
-      _tasks = List<Task>.from(
-        (storedTasks as List).map((item) => Task.fromJson(item)),
-      );
-       ();
+      List<dynamic> decodedTasks;
+      decodedTasks = jsonDecode(storedTasks);
+      _tasks = decodedTasks.map((item) => Task.fromJson(item)).toList();
     }
   }
 

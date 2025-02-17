@@ -15,11 +15,11 @@ class TimeEntryProvider with ChangeNotifier {
 
   void _loadTimeEntriesFromStorage() async {
     var storedTimeEntries = storage.getItem('timeEntries');
+    
     if(storedTimeEntries != null){
-      _timeEntries = List<TimeEntry>.from(
-        (storedTimeEntries as List).map((item) => TimeEntry.fromJson(item)),
-      );
-       ();
+      List<dynamic> decodedEntries;
+      decodedEntries = jsonDecode(storedTimeEntries);
+      _timeEntries = decodedEntries.map((item) => TimeEntry.fromJson(item)).toList();
     }
   }
 
