@@ -1,16 +1,39 @@
-# sfa
 
-A new Flutter project.
+# ⏳ Time Tracking Application
 
-## Getting Started
+A mobile application for tracking work time on projects, built with **Flutter** and state management using **Provider**.
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+### **Features**
+✔️ **Add time entries** for different projects  
+✔️ **Group time entries by project**  
+✔️ **Delete entries** via swipe action  
+✔️ **State management using Provider**  
+✔️ **Easily switch between views**  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+###  **Installation**
+1. Clone the repository
+```sh
+git clone https://github.com/michal513717/Time-Tracking-Application
+cd Time-Tracking-Application
+```
+
+2. Install dependencies
+```sh
+flutter pub get
+```
+
+3. Run the application
+```sh
+flutter run
+```
+
+### **Technology Stack**
+
+- Flutter – Mobile framework
+- Dart – Programming language
+- Provider – State management
+- Intl – Date formatting
+- Collection – Data grouping
