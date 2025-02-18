@@ -1,6 +1,6 @@
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter/material.dart';
-import '../models/project.model.dart';
+import 'package:sfa/models/project.model.dart';
 import 'dart:convert';
 
 class ProjectProvider with ChangeNotifier {
